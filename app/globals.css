@@ -2,26 +2,66 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: #1A1A1A;
+  background: #FAFAF7;
+  font-family: var(--font-outfit), system-ui, sans-serif;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+::selection {
+  background: #1B4D5C;
+  color: white;
+}
+
+/* Prose styling for blog posts and descriptions */
+.prose h2 {
+  font-family: var(--font-outfit), system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 1.375rem;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  color: #1A1A1A;
+}
+
+.prose p {
+  font-size: 1.125rem;
+  line-height: 1.75;
+  margin-bottom: 1.25rem;
+  color: #2D2D2D;
+}
+
+.prose a {
+  color: #1B4D5C;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose a:hover {
+  color: #143d49;
+}
+
+.prose em {
+  font-style: italic;
+}
+
+.prose strong {
+  font-weight: 600;
+}
+
+/* Comparison table scroll on mobile */
+.table-scroll {
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+
+.table-scroll::-webkit-scrollbar-track {
+  background: #F0EDE8;
+}
+
+.table-scroll::-webkit-scrollbar-thumb {
+  background: #E8E4DD;
+  border-radius: 2px;
 }
