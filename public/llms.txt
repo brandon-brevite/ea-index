@@ -1,0 +1,43 @@
+# The EA Index
+
+> Independent comparison tool for remote executive assistant services.
+
+## About
+
+The EA Index is a free, independent comparison site that helps founders, executives, and entrepreneurs find the right remote executive assistant (EA) service. We provide real pricing, honest pros and cons, and detailed breakdowns for 22+ EA services so you can stop sitting through sales calls to get basic information.
+
+## URL
+
+https://www.theeaindex.com
+
+## Key Pages
+
+- [Compare All Services](https://www.theeaindex.com/compare): Side-by-side comparison of 22+ EA services by price, model, and fit.
+- [Find My Match Quiz](https://www.theeaindex.com/quiz): 2-minute quiz to get matched with the best EA services for your needs.
+- [Head-to-Head Comparisons](https://www.theeaindex.com/vs): Direct comparisons like Athena vs Boldly, Belay vs Time Etc.
+- [Insights](https://www.theeaindex.com/insights): Guides, pricing analysis, and opinions on the EA industry.
+- [Best Tools for EAs](https://www.theeaindex.com/best-tools): Recommended software for scheduling, project management, and communication.
+- [Delegation Tactics](https://www.theeaindex.com/tactics): Frameworks and playbooks for working with an executive assistant.
+
+## What We Compare
+
+- Pricing: Real monthly costs, hourly rates, and what is included at each tier.
+- Service model: Managed vs fractional vs marketplace vs direct hire.
+- Assistant quality: US-based vs offshore, vetting process, experience level.
+- Flexibility: Contract length, minimums, onboarding speed, cancellation policy.
+
+## Featured Services
+
+Noire, Athena, Boldly, Time Etc, Double, and 17+ more EA services reviewed independently.
+
+## Content Categories
+
+- Comparisons: Side-by-side service breakdowns
+- Pricing guides: What EA services actually cost
+- Hiring guides: How to evaluate and choose an EA service
+- Delegation tactics: Frameworks for working effectively with an EA
+- Industry opinions: Honest takes on the EA services market
+
+## Contact
+
+https://www.theeaindex.com/about
