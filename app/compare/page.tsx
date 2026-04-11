@@ -133,22 +133,21 @@ export default async function ComparePage() {
             availability, and communication.
           </p>
           <p>
-            US-based assistants typically command higher rates, starting around
-            $25 to $35 per hour for managed services. The advantages include
-            native English fluency, cultural familiarity with American business
-            norms, and overlapping work hours. For executives who need someone
-            on calls, drafting client-facing emails, or coordinating with
-            US-based vendors, a domestic assistant often reduces friction.
+            US-based assistants typically command higher rates. The advantages
+            include native English fluency, cultural familiarity with American
+            business norms, and overlapping work hours. For executives who need
+            someone on calls, drafting client-facing emails, or coordinating
+            with US-based vendors, a domestic assistant often reduces friction.
           </p>
           <p>
             Remote assistants based in Latin America, the Philippines, or other
-            regions usually cost less, with rates starting around $8 to $15 per
-            hour through managed platforms. Many offshore EAs are highly skilled
-            and college-educated, and the best services invest heavily in
-            training and quality control. The tradeoff is that time zone gaps
-            can slow down real-time collaboration, and cultural nuances in
-            business communication may require more explicit instructions
-            upfront.
+            regions usually cost 40% to 60% less than their US-based
+            counterparts through managed platforms. Many offshore EAs are
+            highly skilled and college-educated, and the best services invest
+            heavily in training and quality control. The tradeoff is that time
+            zone gaps can slow down real-time collaboration, and cultural
+            nuances in business communication may require more explicit
+            instructions upfront.
           </p>
           <p>
             Some services offer a blended model, pairing you with a US-based

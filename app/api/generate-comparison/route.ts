@@ -17,6 +17,7 @@ IMPORTANT RULES:
 - 1500-2000 words total.
 - Never use em dashes. Use commas, parentheses, or colons instead.
 - Never use the words: leverage, robust, seamless, holistic, innovative, cutting-edge, elevate, streamline, utilize, comprehensive, empower.
+- When discussing LATAM, Philippines, or other offshore/remote assistant pricing, express costs as a percentage relative to US-based rates (e.g., "40% to 60% less") rather than quoting specific dollar amounts or hourly rates. This protects service margins.
 
 OUTPUT FORMAT: Return a JSON object with these fields:
 {

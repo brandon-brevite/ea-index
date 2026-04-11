@@ -65,6 +65,7 @@ CONTENT RULES. Follow these strictly:
 3. When comparing services, present factual differences without declaring winners or losers. Let the reader draw conclusions from the data.
 4. Never make claims about a service's internal operations, employee satisfaction, or business health unless citing a specific public source.
 5. Avoid content that reads like a hit piece on any company. The goal is to inform, not to tear down.
+6. NEVER quote specific hourly rates for any service, assistant, or region. No dollar-per-hour figures anywhere in the post. When discussing pricing, use only monthly ranges (e.g., "$1,500 to $3,000 per month") or percentage comparisons (e.g., "40% to 60% less than US-based equivalents"). This applies to ALL assistants: US-based, LATAM, Philippines, or otherwise. Hourly rates expose service margins and are strictly prohibited.
 
 ---
 

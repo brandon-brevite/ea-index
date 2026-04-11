@@ -79,7 +79,7 @@ export default async function Home() {
               </h1>
 
               <p className="text-lg md:text-xl text-gray-500 leading-relaxed max-w-2xl mb-10">
-                Real pricing, honest pros and cons, and detailed breakdowns for {serviceCount}+ EA services — so you can stop sitting through sales calls to get basic information.
+                Isn't it time you stopped doing everything yourself?
               </p>
 
               <div className="flex flex-wrap items-center gap-4">

@@ -15,7 +15,7 @@ Noire is not the cheapest option on this list. It is the most personal.',
  array['founders', 'executives'],
  array['White-glove onboarding tailored to your workflow', 'US-based assistants with startup experience', 'No long-term contracts required', 'Direct communication with your assistant'],
  array['Pricing not published (contact required)', 'Smaller team means less redundancy'],
- 4.9, true, true, 0),
+ 4.6, true, true, 0),
 
 ('Athena', 'athena', 'https://www.athenago.com', null,
  'Philippines-based managed EA service popular with tech founders',
@@ -28,33 +28,33 @@ The annual commitment is the main friction point. If your assistant does not wor
  array['founders', 'executives'],
  array['Rigorous assistant selection (less than 1% acceptance)', 'Strong founder community and referral network', 'Dedicated full-time assistant', 'Structured training program'],
  array['Annual contract required', 'Philippines timezone can cause delays', 'Rematch process takes time'],
- 4.3, false, true, 1),
+ 4.5, false, true, 1),
 
 ('Boldly', 'boldly', 'https://boldly.com', null,
  'Premium fractional EAs based in the US with Fortune 500 experience',
  'Boldly positions itself as the premium option for executives who need experienced, US-based support on a fractional basis. Their assistants are W2 employees (not contractors), which means better retention and accountability than most staffing-model competitors.
 
-Pricing starts at $2,520 per month for 40 hours. That comes out to $63 per hour, which is on the higher end. What you get for that price is an assistant who has typically worked in corporate environments and can handle complex executive support without much hand-holding.
+Pricing starts at $2,520 per month for 40 hours, which is on the higher end. What you get for that price is an assistant who has typically worked in corporate environments and can handle complex executive support without much hand-holding.
 
 Boldly works best for executives at mid-to-large companies who need polished, professional support and have the budget for it.',
- 2520, 5040, 'Starts at $2,520/mo for 40 hours ($63/hr)', 'fractional', 'us', '40 hours/month', '1-2 weeks',
+ 2520, 5040, 'Starts at $2,520/mo for 40 hours', 'fractional', 'us', '40 hours/month', '1-2 weeks',
  array['enterprise', 'executives'],
  array['W2 employees with benefits (better retention)', 'US-based assistants with corporate experience', 'Professional, polished service quality', 'Flexible hour packages'],
- array['Premium pricing ($63/hr)', 'Minimum 40 hours/month commitment', 'May be overqualified for simple tasks'],
- 4.2, false, true, 2),
+ array['Premium pricing', 'Minimum 40 hours/month commitment', 'May be overqualified for simple tasks'],
+ 4.4, false, true, 2),
 
 ('BELAY', 'belay', 'https://belaysolutions.com', null,
  'US-based fractional EAs and bookkeepers for growing businesses',
  'BELAY is one of the larger players in the virtual assistant space, offering US-based fractional assistants along with bookkeeping and social media management services. They have been around since 2010 and have a well-established matching process.
 
-Pricing ranges from roughly $2,070 to $3,910 per month depending on hours. BELAY does not publish exact rates on their website, which is a common (and annoying) practice in this industry. Expect to pay around $46 per hour.
+Pricing ranges from roughly $2,070 to $3,910 per month depending on hours. BELAY does not publish exact rates on their website, which is a common (and annoying) practice in this industry.
 
 The service works well for small businesses and mid-market companies that need reliable, US-based support. BELAY is not trying to be the cheapest or the most premium. They are the dependable middle option.',
- 2070, 3910, '$46/hr average, packages from 45-85 hrs/month', 'fractional', 'us', '45-85 hours/month', '1-2 weeks',
+ 2070, 3910, 'Packages from 45-85 hrs/month', 'fractional', 'us', '45-85 hours/month', '1-2 weeks',
  array['enterprise', 'small business'],
  array['Established company (since 2010)', 'US-based assistants', 'Also offers bookkeeping services', 'Good matching process'],
  array['Pricing not transparent on website', 'Minimum hours relatively high', 'Less startup-focused'],
- 3.9, false, true, 3),
+ 4.0, false, true, 3),
 
 ('Prialto', 'prialto', 'https://prialto.com', null,
  'Managed EA teams for organizations that need process-driven support',
@@ -67,7 +67,7 @@ The team model means you sacrifice some personal rapport for reliability and con
  array['enterprise', 'teams'],
  array['Team-based model (backup coverage)', 'Good for process-driven tasks', 'Scalable for organizations', 'Structured workflows and SOPs'],
  array['Less personal than dedicated assistant', 'Longer onboarding period', 'Not ideal for individual founders'],
- 3.7, false, true, 4),
+ 3.8, false, true, 4),
 
 ('Wing Assistant', 'wing-assistant', 'https://getwing.com', null,
  'Budget-friendly managed EA service with month-to-month flexibility',
@@ -80,20 +80,20 @@ At this price point, you are not getting a former Fortune 500 executive assistan
  array['solopreneurs', 'small business'],
  array['Most affordable managed service', 'No long-term contract', 'Fast onboarding (1-3 days)', 'Operations team backup'],
  array['Global assistants (variable quality)', 'Not suited for complex executive tasks', 'Less experienced assistants overall'],
- 3.5, false, true, 5),
+ 3.6, false, true, 5),
 
 ('Time Etc', 'time-etc', 'https://web.timeetc.com', null,
  'Budget fractional EA option with experienced US-based assistants',
  'Time Etc is the best budget option if you specifically want a US-based assistant. Starting at $390 per month for 10 hours, it is the lowest financial commitment on this list for domestic support.
 
-Their assistants are experienced (average 12 years) and work as independent contractors. The $39 per hour rate is remarkably competitive for US-based talent. The catch is that you are buying hours in blocks, and unused hours do not roll over.
+Their assistants are experienced (average 12 years) and work as independent contractors. The pricing is remarkably competitive for US-based talent. The catch is that you are buying hours in blocks, and unused hours do not roll over.
 
 Time Etc is ideal for founders who need 10-20 hours per month of support and do not want to deal with offshore time zones. It is not a full-time EA solution, and it is not trying to be.',
- 390, 1560, 'From $390/mo for 10 hours ($39/hr)', 'fractional', 'us', '10 hours/month', '1-3 days',
+ 390, 1560, 'From $390/mo for 10 hours', 'fractional', 'us', '10 hours/month', '1-3 days',
  array['solopreneurs', 'founders'],
- array['Very affordable for US-based support ($39/hr)', 'Experienced assistants (avg 12 years)', 'Low minimum commitment (10 hrs/mo)', 'Quick setup'],
+ array['Very affordable for US-based support', 'Experienced assistants (avg 12 years)', 'Low minimum commitment (10 hrs/mo)', 'Quick setup'],
  array['Hours do not roll over', 'Independent contractors (less oversight)', 'Limited to part-time support'],
- 4.0, false, true, 6),
+ 4.2, false, true, 6),
 
 ('Viva Talent', 'viva-talent', 'https://vivatalent.com', null,
  'Nearshore direct-hire EAs from Latin America for full-time roles',
@@ -106,7 +106,7 @@ Viva claims to get you matched and working within 24 hours, which is aggressive 
  array['enterprise', 'founders'],
  array['Same timezone as US clients', 'Full-time dedicated assistant', 'Fast matching (under 24 hours claimed)', 'Cost-effective nearshore talent'],
  array['Pricing not transparent', 'You manage the assistant directly', 'No managed service layer'],
- 3.6, false, true, 7),
+ 3.7, false, true, 7),
 
 ('Magic', 'magic', 'https://getmagic.com', null,
  'On-demand managed EA service for founders and solopreneurs',
@@ -119,7 +119,7 @@ Magic works fine for routine tasks: scheduling, research, travel booking, data e
  array['founders', 'solopreneurs'],
  array['Flexible hour scaling', 'Quick onboarding', 'Good for routine tasks', 'Managed service with oversight'],
  array['Global assistants (quality varies)', 'Weak on tasks requiring business context', 'Less personal than boutique options'],
- 3.4, false, true, 8),
+ 3.5, false, true, 8),
 
 ('Wishup', 'wishup', 'https://wishup.co', null,
  'India and US-based managed EAs with instant onboarding claims',
@@ -132,7 +132,7 @@ Wishup works for small businesses and solopreneurs who need affordable support a
  array['small business', 'solopreneurs'],
  array['Very fast onboarding', 'Month-to-month flexibility', 'Both India and US assistant options', 'Pre-vetted assistant pool'],
  array['Quality gap between India and US tiers', 'Less experienced than premium options', '"Instant onboarding" is mostly marketing'],
- 3.3, false, true, 9),
+ 3.4, false, true, 9),
 
 ('Delegated', 'delegated', 'https://delegated.com', null,
  'W2 executive assistants for demanding executives at premium prices',
@@ -158,14 +158,14 @@ The onboarding takes 3-5 days, and then the assistant works for you directly. Ne
  array['founders', 'small business'],
  array['Competitive pricing for quality talent', 'Same timezone as US', 'Full-time dedicated support', 'Strong vetting process'],
  array['Direct-hire model (you manage)', 'No managed service backup', 'Limited to Latin American talent pool'],
- 3.6, false, true, 11);
+ 3.7, false, true, 11);
 
 
 -- Blog Queue (30 topics)
 insert into blog_queue (topic, target_keyword, category, status) values
 ('Athena vs Boldly: what $3,000 a month actually gets you', 'athena vs boldly', 'comparison', 'queued'),
 ('Every EA service''s real pricing in April 2026', 'executive assistant service pricing', 'pricing', 'queued'),
-('BELAY review: the $46/hour EA nobody talks about', 'belay executive assistant review', 'review', 'queued'),
+('BELAY review: the mid-range EA nobody talks about', 'belay executive assistant review', 'review', 'queued'),
 ('The difference between a managed EA and a direct hire', 'managed vs direct hire executive assistant', 'guide', 'queued'),
 ('Wing Assistant at $999/month: what you''re getting and what you''re not', 'wing assistant review', 'review', 'queued'),
 ('Why most founders fire their first executive assistant', 'hiring executive assistant mistakes', 'opinion', 'queued'),
@@ -174,7 +174,7 @@ insert into blog_queue (topic, target_keyword, category, status) values
 ('The offshore EA math most people get wrong', 'offshore executive assistant cost', 'pricing', 'queued'),
 ('Prialto review: managed EA support for teams', 'prialto review', 'review', 'queued'),
 ('What to ask before signing with any EA service', 'questions to ask executive assistant service', 'guide', 'queued'),
-('Time Etc at $39/hour: the budget EA option that works', 'time etc review', 'review', 'queued'),
+('Time Etc review: the budget EA option that works', 'time etc review', 'review', 'queued'),
 ('$1,500 vs $3,500 per month: what the price difference buys', 'executive assistant cost comparison', 'pricing', 'queued'),
 ('Latin American EAs: the real quality and cost tradeoffs', 'latin america virtual assistant quality', 'guide', 'queued'),
 ('Boldly review: premium fractional EAs for demanding execs', 'boldly executive assistant review', 'review', 'queued'),
@@ -182,7 +182,7 @@ insert into blog_queue (topic, target_keyword, category, status) values
 ('US-based vs offshore EA: it depends on exactly one thing', 'us based vs offshore executive assistant', 'guide', 'queued'),
 ('Wishup review: the $1,299/month option from India', 'wishup review', 'review', 'queued'),
 ('How to evaluate an EA service in 15 minutes', 'how to choose executive assistant service', 'guide', 'queued'),
-('The hidden cost of a $5/hour virtual assistant', 'cheap virtual assistant hidden costs', 'pricing', 'queued'),
+('The hidden cost of a bargain-priced virtual assistant', 'cheap virtual assistant hidden costs', 'pricing', 'queued'),
 ('Magic review: the subscription EA for solopreneurs', 'magic virtual assistant review', 'review', 'queued'),
 ('When you don''t need an EA service and when you do', 'do i need an executive assistant', 'opinion', 'queued'),
 ('Viva Talent review: nearshore EAs for startup founders', 'viva talent review', 'review', 'queued'),
