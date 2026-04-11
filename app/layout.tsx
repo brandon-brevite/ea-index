@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import EmailPopup from "@/components/EmailPopup";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -53,6 +54,11 @@ export default function RootLayout({
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
+        <EmailPopup />
+        <Script
+          src="https://subscribe-forms.beehiiv.com/attribution.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

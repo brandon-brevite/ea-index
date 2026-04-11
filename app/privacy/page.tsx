@@ -123,8 +123,8 @@ export default function PrivacyPage() {
         </p>
         <p>
           To exercise any of these rights, contact us at{" "}
-          <a href="mailto:hello@theea.index" className="text-blue-600 hover:underline">
-            hello@theea.index
+          <a href="mailto:support@theeaindex.com" className="text-blue-600 hover:underline">
+            support@theeaindex.com
           </a>.
           We will respond to your request within 30 days.
         </p>
@@ -186,11 +186,10 @@ export default function PrivacyPage() {
         <h2>Contact</h2>
         <p>
           Questions about this Privacy Policy can be directed to us at{" "}
-          <a href="mailto:hello@theea.index" className="text-blue-600 hover:underline">
-            hello@theea.index
+          <a href="mailto:support@theeaindex.com" className="text-blue-600 hover:underline">
+            support@theeaindex.com
           </a>.
         </p>
-        <p>The EA Index, New York, NY</p>
       </div>
     </div>
   );

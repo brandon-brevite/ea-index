@@ -191,11 +191,10 @@ export default function TermsPage() {
         <h2>16. Contact</h2>
         <p>
           Questions about these Terms can be directed to us at{" "}
-          <a href="mailto:hello@theea.index" className="text-blue-600 hover:underline">
-            hello@theea.index
+          <a href="mailto:support@theeaindex.com" className="text-blue-600 hover:underline">
+            support@theeaindex.com
           </a>.
         </p>
-        <p>The EA Index, New York, NY</p>
       </div>
     </div>
   );
