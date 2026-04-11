@@ -79,7 +79,7 @@ export default async function Home() {
               </h1>
 
               <p className="text-lg md:text-xl text-gray-500 leading-relaxed max-w-2xl mb-10">
-                Isn't it time you stopped doing everything yourself?
+                Isn&apos;t it time you stopped doing everything yourself?
               </p>
 
               <div className="flex flex-wrap items-center gap-4">
