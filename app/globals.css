@@ -2,42 +2,137 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Primary palette — Wing-inspired navy/blue */
+  --navy: #0C1B3F;
+  --navy-light: #1A2D5A;
+  --blue: #2563EB;
+  --blue-light: #3B82F6;
+  --purple: #7C3AED;
+  --indigo: #4F46E5;
+
+  /* Neutrals */
+  --white: #FFFFFF;
+  --gray-50: #F8FAFC;
+  --gray-100: #F1F5F9;
+  --gray-200: #E2E8F0;
+  --gray-300: #CBD5E1;
+  --gray-400: #94A3B8;
+  --gray-500: #64748B;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1E293B;
+  --gray-900: #0F172A;
+
+  /* Accent */
+  --teal: #0D9488;
+  --teal-light: #14B8A6;
+
+  /* Gradients */
+  --gradient-cta: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+  --gradient-cta-hover: linear-gradient(135deg, #1D4ED8 0%, #6D28D9 100%);
+  --gradient-hero: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(37, 99, 235, 0.12) 0%, transparent 70%),
+                   radial-gradient(ellipse 60% 50% at 80% 20%, rgba(124, 58, 237, 0.08) 0%, transparent 60%);
+  --gradient-hero-dark: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(37, 99, 235, 0.25) 0%, transparent 70%),
+                        radial-gradient(ellipse 60% 50% at 80% 20%, rgba(124, 58, 237, 0.15) 0%, transparent 60%);
+  --gradient-surface: linear-gradient(180deg, var(--gray-50) 0%, var(--white) 100%);
+}
+
 body {
-  color: #1A1A1A;
-  background: #FAFAF7;
-  font-family: var(--font-outfit), system-ui, sans-serif;
+  color: var(--gray-800);
+  background: var(--white);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
-  background: #1B4D5C;
+  background: var(--blue);
   color: white;
+}
+
+/* Gradient CTA button */
+.btn-gradient {
+  background: var(--gradient-cta);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-gradient:hover {
+  background: var(--gradient-cta-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.3);
+}
+
+/* Outline pill button */
+.btn-outline {
+  border: 1.5px solid var(--gray-200);
+  border-radius: 50px;
+  color: var(--gray-700);
+  font-weight: 500;
+  transition: all 0.2s ease;
+  background: transparent;
+}
+
+.btn-outline:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+/* Glass card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+}
+
+/* Stat card with subtle gradient border */
+.stat-card {
+  background: var(--white);
+  border-radius: 12px;
+  border: 1px solid var(--gray-200);
+  transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+  border-color: var(--blue);
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.08);
 }
 
 /* Prose styling for blog posts and descriptions */
 .prose h2 {
-  font-family: var(--font-outfit), system-ui, sans-serif;
-  font-weight: 600;
-  font-size: 1.375rem;
-  margin-top: 2rem;
+  font-family: var(--font-manrope), system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-top: 2.5rem;
   margin-bottom: 0.75rem;
-  color: #1A1A1A;
+  color: var(--navy);
+  letter-spacing: -0.02em;
 }
 
 .prose p {
-  font-size: 1.125rem;
-  line-height: 1.75;
+  font-size: 1.0625rem;
+  line-height: 1.8;
   margin-bottom: 1.25rem;
-  color: #2D2D2D;
+  color: var(--gray-600);
 }
 
 .prose a {
-  color: #1B4D5C;
+  color: var(--blue);
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(37, 99, 235, 0.3);
 }
 
 .prose a:hover {
-  color: #143d49;
+  text-decoration-color: var(--blue);
 }
 
 .prose em {
@@ -46,6 +141,7 @@ body {
 
 .prose strong {
   font-weight: 600;
+  color: var(--gray-800);
 }
 
 /* Comparison table scroll on mobile */
@@ -58,10 +154,38 @@ body {
 }
 
 .table-scroll::-webkit-scrollbar-track {
-  background: #F0EDE8;
+  background: var(--gray-100);
 }
 
 .table-scroll::-webkit-scrollbar-thumb {
-  background: #E8E4DD;
+  background: var(--gray-300);
   border-radius: 2px;
+}
+
+/* Sticky nav blur */
+.nav-blur {
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  background: rgba(255, 255, 255, 0.85);
+}
+
+/* Hero gradient background */
+.hero-gradient {
+  background: var(--gradient-hero);
+}
+
+/* Smooth section transitions */
+.section-fade {
+  position: relative;
+}
+
+.section-fade::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, var(--white));
+  pointer-events: none;
 }

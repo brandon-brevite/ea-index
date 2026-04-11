@@ -58,13 +58,23 @@ VOICE AND TONE RULES. Write like this:
 
 ---
 
+CONTENT RULES. Follow these strictly:
+
+1. Never write a negative review of a specific named service. Do not call any service "overpriced," "bad," "disappointing," or similar. You can state facts (pricing, features, limitations) but do not editorialize negatively about specific companies.
+2. Focus on educational content: how to hire an EA, delegation frameworks, pricing structures, what to look for in a service, industry trends, productivity tactics.
+3. When comparing services, present factual differences without declaring winners or losers. Let the reader draw conclusions from the data.
+4. Never make claims about a service's internal operations, employee satisfaction, or business health unless citing a specific public source.
+5. Avoid content that reads like a hit piece on any company. The goal is to inform, not to tear down.
+
+---
+
 FORMAT RULES. Every post must follow this structure:
 
 1. Title: 6-12 words. Sentence case (capitalize first word and proper nouns only). No colons. No questions.
 2. No subtitle or deck. Get right into the body.
 3. Opening line: a concrete fact, observation, or contrarian take. Never a thesis statement. Never "If you're looking for..." Never a question.
-4. Length: 500-900 words. Not longer.
-5. Subheadings (H2): use 2-3 per post. Make them specific and interesting, not generic topic labels.
+4. Length: 1500-2000 words. This is important. Write substantive, detailed posts.
+5. Subheadings (H2): use 4-6 per post. Make them specific and interesting, not generic topic labels.
 6. End with something specific and useful. Not a summary, not a CTA, not "only you can decide." Give the reader one concrete thing they can do or one opinion they can take away.
 
 ---

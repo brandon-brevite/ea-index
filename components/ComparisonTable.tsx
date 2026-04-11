@@ -5,7 +5,6 @@ import Link from "next/link";
 import {
   Service,
   ServiceModel,
-  AssistantLocation,
   SERVICE_MODEL_LABELS,
   LOCATION_LABELS,
 } from "@/lib/types";
@@ -29,12 +28,24 @@ function formatPrice(service: Service): string {
 }
 
 function RatingStars({ rating }: { rating: number | null }) {
-  if (!rating) return <span className="text-text-muted text-sm">N/A</span>;
+  if (!rating) return <span className="text-gray-400 text-sm">N/A</span>;
   return (
-    <span className="text-sm font-medium text-text">
-      {rating.toFixed(1)}
-      <span className="text-text-muted">/5</span>
-    </span>
+    <div className="flex items-center gap-1.5">
+      <span className="text-sm font-semibold text-navy">{rating.toFixed(1)}</span>
+      <div className="flex gap-0.5">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <svg
+            key={star}
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill={star <= Math.round(rating) ? "#2563EB" : "#E2E8F0"}
+          >
+            <path d="M6 0.5L7.76 4.07L11.5 4.62L8.75 7.29L9.52 11.01L6 9.17L2.48 11.01L3.25 7.29L0.5 4.62L4.24 4.07L6 0.5Z" />
+          </svg>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -52,9 +63,7 @@ export default function ComparisonTable({
 }) {
   const [sortBy, setSortBy] = useState<SortKey>("rating");
   const [filterModel, setFilterModel] = useState<ServiceModel | "all">("all");
-  const [filterLocation, setFilterLocation] = useState<
-    AssistantLocation | "all"
-  >("all");
+  const [filterLocation, setFilterLocation] = useState<string>("all");
   const [filterBestFor, setFilterBestFor] = useState<string>("all");
 
   const filtered = useMemo(() => {
@@ -63,14 +72,15 @@ export default function ComparisonTable({
     if (filterModel !== "all") {
       result = result.filter((s) => s.service_model === filterModel);
     }
-    if (filterLocation !== "all") {
-      result = result.filter((s) => s.assistant_location === filterLocation);
+    if (filterLocation === "us") {
+      result = result.filter((s) => s.assistant_location === "us");
+    } else if (filterLocation === "remote") {
+      result = result.filter((s) => s.assistant_location !== "us");
     }
     if (filterBestFor !== "all") {
       result = result.filter((s) => s.best_for.includes(filterBestFor));
     }
 
-    // Always keep Noire at top
     const noire = result.filter((s) => s.is_editors_pick);
     const rest = result.filter((s) => !s.is_editors_pick);
 
@@ -90,16 +100,19 @@ export default function ComparisonTable({
     return [...noire, ...rest];
   }, [services, sortBy, filterModel, filterLocation, filterBestFor]);
 
+  const selectClasses =
+    "text-sm font-medium border border-gray-200 rounded-pill px-4 py-2 bg-white text-gray-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all cursor-pointer appearance-none";
+
   return (
     <div>
       {/* Filter bar */}
-      <div className="flex flex-wrap items-center gap-3 mb-6">
+      <div className="flex flex-wrap items-center gap-3 mb-8">
         <select
           value={filterModel}
           onChange={(e) =>
             setFilterModel(e.target.value as ServiceModel | "all")
           }
-          className="text-sm border border-border rounded-md px-3 py-1.5 bg-bg text-text focus:outline-none focus:border-accent"
+          className={selectClasses}
         >
           <option value="all">All models</option>
           {Object.entries(SERVICE_MODEL_LABELS).map(([key, label]) => (
@@ -111,23 +124,18 @@ export default function ComparisonTable({
 
         <select
           value={filterLocation}
-          onChange={(e) =>
-            setFilterLocation(e.target.value as AssistantLocation | "all")
-          }
-          className="text-sm border border-border rounded-md px-3 py-1.5 bg-bg text-text focus:outline-none focus:border-accent"
+          onChange={(e) => setFilterLocation(e.target.value)}
+          className={selectClasses}
         >
           <option value="all">All locations</option>
-          {Object.entries(LOCATION_LABELS).map(([key, label]) => (
-            <option key={key} value={key}>
-              {label}
-            </option>
-          ))}
+          <option value="us">US-based</option>
+          <option value="remote">Remote</option>
         </select>
 
         <select
           value={filterBestFor}
           onChange={(e) => setFilterBestFor(e.target.value)}
-          className="text-sm border border-border rounded-md px-3 py-1.5 bg-bg text-text focus:outline-none focus:border-accent"
+          className={selectClasses}
         >
           <option value="all">Best for: anyone</option>
           <option value="founders">Founders</option>
@@ -141,7 +149,7 @@ export default function ComparisonTable({
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as SortKey)}
-          className="text-sm border border-border rounded-md px-3 py-1.5 bg-bg text-text focus:outline-none focus:border-accent"
+          className={selectClasses}
         >
           <option value="rating">Sort: Rating</option>
           <option value="price_low">Sort: Price (low to high)</option>
@@ -151,120 +159,111 @@ export default function ComparisonTable({
 
       {/* Table */}
       <div className="table-scroll overflow-x-auto -mx-6 px-6">
-        <table className="w-full min-w-[800px]">
-          <thead>
-            <tr className="border-b border-border text-left">
-              <th className="text-xs font-medium text-text-muted uppercase tracking-wider pb-3 pr-4">
-                Service
-              </th>
-              <th className="text-xs font-medium text-text-muted uppercase tracking-wider pb-3 pr-4">
-                Price
-              </th>
-              <th className="text-xs font-medium text-text-muted uppercase tracking-wider pb-3 pr-4 hidden sm:table-cell">
-                Model
-              </th>
-              <th className="text-xs font-medium text-text-muted uppercase tracking-wider pb-3 pr-4 hidden md:table-cell">
-                Location
-              </th>
-              <th className="text-xs font-medium text-text-muted uppercase tracking-wider pb-3 pr-4 hidden lg:table-cell">
-                Best for
-              </th>
-              <th className="text-xs font-medium text-text-muted uppercase tracking-wider pb-3 pr-4">
-                Rating
-              </th>
-              <th className="text-xs font-medium text-text-muted uppercase tracking-wider pb-3">
-                &nbsp;
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map((service, i) => (
-              <tr
-                key={service.id}
-                className={`border-b border-border-light ${
-                  service.is_editors_pick
-                    ? "bg-accent-light border-l-2 border-l-accent"
-                    : i % 2 === 1
-                    ? "bg-row-alt"
-                    : ""
-                }`}
-              >
-                <td className="py-4 pr-4">
-                  <div className="flex items-center gap-2">
-                    <Link
-                      href={`/services/${service.slug}`}
-                      className="font-medium text-text hover:text-accent transition-colors"
-                    >
-                      {service.name}
-                    </Link>
-                    {service.is_editors_pick && (
-                      <span className="text-[10px] font-medium uppercase tracking-wider bg-accent text-white px-2 py-0.5 rounded-full whitespace-nowrap">
-                        Editor&apos;s Pick
-                      </span>
-                    )}
-                  </div>
-                </td>
-                <td className="py-4 pr-4 text-sm whitespace-nowrap">
-                  {formatPrice(service)}
-                </td>
-                <td className="py-4 pr-4 text-sm text-text-muted hidden sm:table-cell">
-                  {SERVICE_MODEL_LABELS[service.service_model]}
-                </td>
-                <td className="py-4 pr-4 text-sm text-text-muted hidden md:table-cell">
-                  {LOCATION_LABELS[service.assistant_location]}
-                </td>
-                <td className="py-4 pr-4 hidden lg:table-cell">
-                  <div className="flex flex-wrap gap-1">
-                    {service.best_for.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-[11px] text-text-muted bg-border-light px-2 py-0.5 rounded-full capitalize"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </td>
-                <td className="py-4 pr-4">
-                  <RatingStars rating={service.rating} />
-                </td>
-                <td className="py-4">
-                  <a
-                    href={service.affiliate_url || service.website_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => trackClick(service.id)}
-                    className="text-sm font-medium border border-accent text-accent hover:bg-accent hover:text-white px-4 py-1.5 rounded-md transition-colors whitespace-nowrap"
-                  >
-                    Visit site
-                  </a>
-                </td>
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-card overflow-hidden min-w-[800px]">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-gray-100 bg-gray-50/50">
+                <th className="text-xs font-semibold text-gray-400 uppercase tracking-wider py-3.5 px-5 text-left">
+                  Service
+                </th>
+                <th className="text-xs font-semibold text-gray-400 uppercase tracking-wider py-3.5 px-5 text-left">
+                  Price
+                </th>
+                <th className="text-xs font-semibold text-gray-400 uppercase tracking-wider py-3.5 px-5 text-left hidden sm:table-cell">
+                  Model
+                </th>
+                <th className="text-xs font-semibold text-gray-400 uppercase tracking-wider py-3.5 px-5 text-left hidden md:table-cell">
+                  Location
+                </th>
+                <th className="text-xs font-semibold text-gray-400 uppercase tracking-wider py-3.5 px-5 text-left hidden lg:table-cell">
+                  Best for
+                </th>
+                <th className="text-xs font-semibold text-gray-400 uppercase tracking-wider py-3.5 px-5 text-left">
+                  Rating
+                </th>
+                <th className="py-3.5 px-5">
+                  <span className="sr-only">Actions</span>
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filtered.map((service, i) => (
+                <tr
+                  key={service.id}
+                  className={`border-b border-gray-100 last:border-b-0 transition-colors hover:bg-blue-50/30 ${
+                    service.is_editors_pick
+                      ? "bg-gradient-to-r from-blue-50/60 to-purple-50/30"
+                      : i % 2 === 1
+                      ? "bg-gray-50/30"
+                      : ""
+                  }`}
+                >
+                  <td className="py-4 px-5">
+                    <div className="flex items-center gap-2.5">
+                      <Link
+                        href={`/services/${service.slug}`}
+                        className="font-semibold text-navy hover:text-blue-600 transition-colors"
+                      >
+                        {service.name}
+                      </Link>
+                      {service.is_editors_pick && (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider bg-gradient-to-r from-blue-600 to-purple-600 text-white px-2.5 py-0.5 rounded-full whitespace-nowrap">
+                          <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
+                            <path d="M5 0.5L6.18 3.82L9.69 3.82L6.76 5.93L7.94 9.25L5 7.14L2.06 9.25L3.24 5.93L0.31 3.82L3.82 3.82L5 0.5Z" />
+                          </svg>
+                          Editor&apos;s Pick
+                        </span>
+                      )}
+                    </div>
+                  </td>
+                  <td className="py-4 px-5 text-sm font-medium text-gray-700 whitespace-nowrap">
+                    {formatPrice(service)}
+                  </td>
+                  <td className="py-4 px-5 text-sm text-gray-500 hidden sm:table-cell">
+                    {SERVICE_MODEL_LABELS[service.service_model]}
+                  </td>
+                  <td className="py-4 px-5 text-sm text-gray-500 hidden md:table-cell">
+                    {LOCATION_LABELS[service.assistant_location]}
+                  </td>
+                  <td className="py-4 px-5 hidden lg:table-cell">
+                    <div className="flex flex-wrap gap-1.5">
+                      {service.best_for.map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-[11px] font-medium text-gray-500 bg-gray-100 px-2.5 py-0.5 rounded-full capitalize"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </td>
+                  <td className="py-4 px-5">
+                    <RatingStars rating={service.rating} />
+                  </td>
+                  <td className="py-4 px-5">
+                    <a
+                      href={service.affiliate_url || service.website_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => trackClick(service.id)}
+                      className="btn-gradient text-xs font-semibold px-5 py-2 whitespace-nowrap inline-block"
+                    >
+                      Visit site
+                    </a>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {filtered.length === 0 && (
-        <p className="text-center text-text-muted py-12 text-sm">
+        <p className="text-center text-gray-400 py-16 text-sm">
           No services match your filters.
         </p>
       )}
 
-      {/* Bottom CTA */}
-      <div className="mt-12 text-center">
-        <p className="text-text-muted text-sm mb-2">
-          Not sure which is right for you?
-        </p>
-        <a
-          href="https://noireea.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sm font-medium text-accent hover:underline"
-        >
-          Talk to Noire about your needs
-        </a>
-      </div>
     </div>
   );
 }

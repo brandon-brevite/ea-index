@@ -20,6 +20,8 @@ export interface Service {
   rating: number | null;
   is_editors_pick: boolean;
   is_featured: boolean;
+  trustpilot_rating: number | null;
+  trustpilot_url: string | null;
   display_order: number;
   created_at: string;
   updated_at: string;
@@ -71,11 +73,11 @@ export const SERVICE_MODEL_LABELS: Record<ServiceModel, string> = {
 };
 
 export const LOCATION_LABELS: Record<AssistantLocation, string> = {
-  us: "US",
-  latam: "Latin America",
-  philippines: "Philippines",
-  mixed: "Mixed",
-  global: "Global",
+  us: "US-based",
+  latam: "Remote",
+  philippines: "Remote",
+  mixed: "Remote",
+  global: "Remote",
 };
 
 export const BEST_FOR_OPTIONS = [

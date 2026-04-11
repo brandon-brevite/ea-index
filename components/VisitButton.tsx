@@ -23,7 +23,7 @@ export default function VisitButton({
       target="_blank"
       rel="noopener noreferrer"
       onClick={handleClick}
-      className="inline-block text-sm font-medium bg-accent text-white px-6 py-2.5 rounded-md hover:bg-accent/90 transition-colors"
+      className="btn-gradient inline-block text-sm font-semibold px-6 py-2.5"
     >
       Visit {service.name}
     </a>

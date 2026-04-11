@@ -75,55 +75,78 @@ export default async function ServicePage({
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
-          <h1 className="font-serif text-3xl sm:text-4xl text-text">
+          <h1 className="font-heading text-3xl sm:text-4xl font-bold text-navy tracking-tight">
             {service.name}
           </h1>
           {service.is_editors_pick && (
-            <span className="text-[10px] font-medium uppercase tracking-wider bg-accent text-white px-2 py-0.5 rounded-full">
+            <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider bg-gradient-to-r from-blue-600 to-purple-600 text-white px-2.5 py-0.5 rounded-full">
               Editor&apos;s Pick
             </span>
           )}
         </div>
         {service.tagline && (
-          <p className="text-text-muted text-body">{service.tagline}</p>
+          <p className="text-gray-500 text-body">{service.tagline}</p>
         )}
       </div>
 
       {/* Price */}
-      <div className="text-2xl font-medium text-text mb-8">{priceDisplay}</div>
+      <div className="text-2xl font-bold text-navy mb-8">{priceDisplay}</div>
+
+      {/* Trustpilot */}
+      {service.trustpilot_rating && (
+        <div className="flex items-center gap-3 mb-8">
+          <div className="flex items-center gap-1.5">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M10 1L12.94 6.96L19.5 7.91L14.75 12.54L15.88 19.07L10 16L4.12 19.07L5.25 12.54L0.5 7.91L7.06 6.96L10 1Z" fill="#00B67A"/>
+            </svg>
+            <span className="text-sm font-semibold text-gray-700">{service.trustpilot_rating.toFixed(1)}</span>
+            <span className="text-sm text-gray-400">on Trustpilot</span>
+          </div>
+          {service.trustpilot_url && (
+            <a
+              href={service.trustpilot_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-blue-600 hover:underline"
+            >
+              View reviews
+            </a>
+          )}
+        </div>
+      )}
 
       {/* Quick facts */}
-      <div className="border border-border rounded-lg p-5 mb-10 grid grid-cols-2 gap-4">
+      <div className="bg-gray-50 border border-gray-200 rounded-2xl p-5 mb-10 grid grid-cols-2 gap-4">
         <div>
-          <p className="text-xs uppercase tracking-wider text-text-muted mb-1">
+          <p className="text-xs uppercase tracking-wider text-gray-400 mb-1">
             Service model
           </p>
-          <p className="text-sm font-medium">
+          <p className="text-sm font-semibold text-gray-700">
             {SERVICE_MODEL_LABELS[service.service_model]}
           </p>
         </div>
         <div>
-          <p className="text-xs uppercase tracking-wider text-text-muted mb-1">
+          <p className="text-xs uppercase tracking-wider text-gray-400 mb-1">
             Assistant location
           </p>
-          <p className="text-sm font-medium">
+          <p className="text-sm font-semibold text-gray-700">
             {LOCATION_LABELS[service.assistant_location]}
           </p>
         </div>
         {service.min_commitment && (
           <div>
-            <p className="text-xs uppercase tracking-wider text-text-muted mb-1">
+            <p className="text-xs uppercase tracking-wider text-gray-400 mb-1">
               Minimum commitment
             </p>
-            <p className="text-sm font-medium">{service.min_commitment}</p>
+            <p className="text-sm font-semibold text-gray-700">{service.min_commitment}</p>
           </div>
         )}
         {service.onboarding_speed && (
           <div>
-            <p className="text-xs uppercase tracking-wider text-text-muted mb-1">
+            <p className="text-xs uppercase tracking-wider text-gray-400 mb-1">
               Onboarding speed
             </p>
-            <p className="text-sm font-medium">{service.onboarding_speed}</p>
+            <p className="text-sm font-semibold text-gray-700">{service.onboarding_speed}</p>
           </div>
         )}
       </div>
@@ -137,13 +160,13 @@ export default async function ServicePage({
       {/* Pros */}
       {service.pros.length > 0 && (
         <div className="mb-8">
-          <h2 className="font-sans text-lg font-semibold mb-3">
+          <h2 className="font-heading text-lg font-semibold text-navy mb-3">
             What works well
           </h2>
           <ul className="space-y-2">
             {service.pros.map((pro, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm">
-                <span className="text-accent mt-0.5 shrink-0">+</span>
+              <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
+                <span className="text-teal mt-0.5 shrink-0 font-bold">+</span>
                 {pro}
               </li>
             ))}
@@ -154,13 +177,13 @@ export default async function ServicePage({
       {/* Cons */}
       {service.cons.length > 0 && (
         <div className="mb-10">
-          <h2 className="font-sans text-lg font-semibold mb-3">
+          <h2 className="font-heading text-lg font-semibold text-navy mb-3">
             What to watch out for
           </h2>
           <ul className="space-y-2">
             {service.cons.map((con, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm">
-                <span className="text-text-muted mt-0.5 shrink-0">-</span>
+              <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
+                <span className="text-gray-400 mt-0.5 shrink-0">-</span>
                 {con}
               </li>
             ))}
@@ -175,7 +198,7 @@ export default async function ServicePage({
       <div className="mt-8">
         <Link
           href="/"
-          className="text-sm text-accent hover:underline"
+          className="text-sm text-blue-600 hover:underline"
         >
           Compare with other services
         </Link>
@@ -183,16 +206,16 @@ export default async function ServicePage({
 
       {/* Related posts */}
       {relatedPosts.length > 0 && (
-        <div className="mt-16 pt-10 border-t border-border">
-          <h2 className="font-sans text-lg font-semibold mb-4">
+        <div className="mt-16 pt-10 border-t border-gray-200">
+          <h2 className="font-heading text-lg font-semibold text-navy mb-4">
             Related articles
           </h2>
           <div className="space-y-3">
             {relatedPosts.map((post) => (
               <Link
                 key={post.id}
-                href={`/blog/${post.slug}`}
-                className="block text-sm text-text hover:text-accent transition-colors"
+                href={`/insights/${post.slug}`}
+                className="block text-sm text-gray-700 hover:text-blue-600 transition-colors"
               >
                 {post.title}
               </Link>
