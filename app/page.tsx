@@ -1,5 +1,6 @@
 import { createServerClient } from "@/lib/supabase";
 import { Service } from "@/lib/types";
+import Image from "next/image";
 import Link from "next/link";
 
 export const revalidate = 3600;
@@ -64,32 +65,45 @@ export default async function Home() {
       {/* Hero */}
       <section className="hero-gradient relative overflow-hidden">
         <div className="max-w-content mx-auto px-6 pt-20 pb-24 md:pt-28 md:pb-32">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-xs font-semibold tracking-wide uppercase mb-6">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-              Free comparison tool
+          <div className="flex flex-col md:flex-row items-center gap-12 md:gap-16">
+            <div className="max-w-3xl flex-1">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-xs font-semibold tracking-wide uppercase mb-6">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                Free comparison tool
+              </div>
+
+              <h1 className="font-heading text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold text-navy leading-[1.1] tracking-tight mb-6">
+                Find the right executive
+                <br />
+                assistant service
+              </h1>
+
+              <p className="text-lg md:text-xl text-gray-500 leading-relaxed max-w-2xl mb-10">
+                Real pricing, honest pros and cons, and detailed breakdowns for {serviceCount}+ EA services — so you can stop sitting through sales calls to get basic information.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-4">
+                <Link href="/quiz" className="btn-gradient text-base px-8 py-3.5">
+                  Find my match
+                </Link>
+                <Link
+                  href="/compare"
+                  className="btn-outline text-base px-8 py-3.5"
+                >
+                  Browse all services
+                </Link>
+              </div>
             </div>
 
-            <h1 className="font-heading text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold text-navy leading-[1.1] tracking-tight mb-6">
-              Find the right executive
-              <br />
-              assistant service
-            </h1>
-
-            <p className="text-lg md:text-xl text-gray-500 leading-relaxed max-w-2xl mb-10">
-              Real pricing, honest pros and cons, and detailed breakdowns for {serviceCount}+ EA services — so you can stop sitting through sales calls to get basic information.
-            </p>
-
-            <div className="flex flex-wrap items-center gap-4">
-              <Link href="/quiz" className="btn-gradient text-base px-8 py-3.5">
-                Find my match
-              </Link>
-              <Link
-                href="/compare"
-                className="btn-outline text-base px-8 py-3.5"
-              >
-                Browse all services
-              </Link>
+            <div className="flex-shrink-0 w-full md:w-[380px] lg:w-[440px]">
+              <Image
+                src="/hero-ea.avif"
+                alt="Executive assistant at work"
+                width={440}
+                height={587}
+                className="rounded-2xl shadow-lg object-cover w-full"
+                priority
+              />
             </div>
           </div>
         </div>
