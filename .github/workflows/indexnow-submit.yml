@@ -19,11 +19,11 @@ jobs:
           set -euo pipefail
 
           echo "Fetching sitemap from ${SITE_URL}/sitemap.xml ..."
-          SITEMAP=$(curl -sSf "${SITE_URL}/sitemap.xml")
-          echo "Sitemap fetched ($(echo "$SITEMAP" | wc -c) bytes)"
+          SITEMAP=$(curl -sSfL "${SITE_URL}/sitemap.xml")
+          echo "Sitemap fetched ($(echo "$SITEMAP" | wc -c | tr -d ' ') bytes)"
 
-          # Parse all <loc> URLs using grep -o (POSIX-compatible)
-          URLS=$(echo "$SITEMAP" | grep -o '<loc>[^<]*</loc>' | sed 's/<loc>//g;s/<\/loc>//g')
+          # Parse all <loc> URLs (handles multi-line <loc> tags)
+          URLS=$(echo "$SITEMAP" | tr -d '\n' | grep -o '<loc>[^<]*</loc>' | sed 's/<loc>//g;s/<\/loc>//g' | tr -s ' ' | sed 's/^ //;s/ $//')
 
           if [ -z "$URLS" ]; then
             echo "::error::No URLs found in sitemap"
