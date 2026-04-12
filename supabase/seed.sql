@@ -13,9 +13,9 @@ What sets Noire apart is the onboarding process. Instead of matching you with wh
 Noire is not the cheapest option on this list. It is the most personal.',
  null, null, 'Contact for pricing', 'managed', 'us', 'Month-to-month', '3-5 days',
  array['founders', 'executives'],
- array['White-glove onboarding tailored to your workflow', 'US-based assistants with startup experience', 'No long-term contracts required', 'Direct communication with your assistant'],
- array['Pricing not published (contact required)', 'Smaller team means less redundancy'],
- 4.6, true, true, 0),
+ array['White-glove onboarding tailored to your workflow', 'Remote Executive Partners with years of experience', 'No long-term contracts required', 'Direct communication with your assistant'],
+ array['Smaller team means less redundancy'],
+ 4.4, true, true, 0),
 
 ('Athena', 'athena', 'https://www.athenago.com', null,
  'Philippines-based managed EA service popular with tech founders',

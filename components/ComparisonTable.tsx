@@ -187,7 +187,11 @@ export default function ComparisonTable({
               </tr>
             </thead>
             <tbody>
-              {filtered.map((service, i) => (
+              {filtered.map((service, i) => {
+                const rank = service.is_editors_pick
+                  ? null
+                  : filtered.slice(0, i + 1).filter((s) => !s.is_editors_pick).length;
+                return (
                 <tr
                   key={service.id}
                   className={`border-b border-gray-100 last:border-b-0 transition-colors hover:bg-blue-50/30 ${
@@ -200,6 +204,11 @@ export default function ComparisonTable({
                 >
                   <td className="py-4 px-5">
                     <div className="flex items-center gap-2.5">
+                      {rank !== null && (
+                        <span className="text-xs font-semibold text-gray-400 min-w-[18px]">
+                          {`${rank}.`}
+                        </span>
+                      )}
                       <Link
                         href={`/services/${service.slug}`}
                         className="font-semibold text-navy hover:text-blue-600 transition-colors"
@@ -252,7 +261,8 @@ export default function ComparisonTable({
                     </a>
                   </td>
                 </tr>
-              ))}
+                );
+              })}
             </tbody>
           </table>
         </div>
