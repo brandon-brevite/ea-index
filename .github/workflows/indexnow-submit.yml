@@ -16,12 +16,21 @@ jobs:
           INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
           SITE_URL: ${{ secrets.SITE_URL }}
         run: |
-          # Fetch sitemap
-          SITEMAP=$(curl -sS "${SITE_URL}/sitemap.xml")
+          set -euo pipefail
 
-          # Parse all <loc> URLs
-          URLS=$(echo "$SITEMAP" | grep -oP '(?<=<loc>)[^<]+')
-          URL_COUNT=$(echo "$URLS" | wc -l)
+          echo "Fetching sitemap from ${SITE_URL}/sitemap.xml ..."
+          SITEMAP=$(curl -sSf "${SITE_URL}/sitemap.xml")
+          echo "Sitemap fetched ($(echo "$SITEMAP" | wc -c) bytes)"
+
+          # Parse all <loc> URLs using grep -o (POSIX-compatible)
+          URLS=$(echo "$SITEMAP" | grep -o '<loc>[^<]*</loc>' | sed 's/<loc>//g;s/<\/loc>//g')
+
+          if [ -z "$URLS" ]; then
+            echo "::error::No URLs found in sitemap"
+            exit 1
+          fi
+
+          URL_COUNT=$(echo "$URLS" | wc -l | tr -d ' ')
           echo "Found $URL_COUNT URLs in sitemap"
 
           # Build JSON array
@@ -38,21 +47,21 @@ jobs:
             --argjson urlList "$URL_JSON" \
             '{host: $host, key: $key, keyLocation: $keyLocation, urlList: $urlList}')
 
-          echo "Submitting $URL_COUNT URLs to IndexNow..."
+          echo "Submitting $URL_COUNT URLs to IndexNow for host $HOST ..."
 
           # Submit to IndexNow
-          RESPONSE=$(curl -sS -w "\n%{http_code}" -X POST \
+          HTTP_CODE=$(curl -sS -o /tmp/indexnow-response.txt -w "%{http_code}" -X POST \
             "https://api.indexnow.org/IndexNow" \
             -H "Content-Type: application/json; charset=utf-8" \
             -d "$PAYLOAD")
 
-          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
-          BODY=$(echo "$RESPONSE" | head -n -1)
-
           echo "IndexNow response: $HTTP_CODE"
-          echo "$BODY"
+          cat /tmp/indexnow-response.txt || true
+          echo ""
 
           if [ "$HTTP_CODE" -ge 400 ]; then
             echo "::error::IndexNow submission failed with status $HTTP_CODE"
             exit 1
           fi
+
+          echo "Successfully submitted $URL_COUNT URLs to IndexNow"
