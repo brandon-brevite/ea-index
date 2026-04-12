@@ -1,0 +1,58 @@
+name: IndexNow — Submit Sitemap URLs
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for Vercel deploy
+        run: sleep 60
+
+      - name: Fetch sitemap and submit to IndexNow
+        env:
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+          SITE_URL: ${{ secrets.SITE_URL }}
+        run: |
+          # Fetch sitemap
+          SITEMAP=$(curl -sS "${SITE_URL}/sitemap.xml")
+
+          # Parse all <loc> URLs
+          URLS=$(echo "$SITEMAP" | grep -oP '(?<=<loc>)[^<]+')
+          URL_COUNT=$(echo "$URLS" | wc -l)
+          echo "Found $URL_COUNT URLs in sitemap"
+
+          # Build JSON array
+          URL_JSON=$(echo "$URLS" | jq -R -s 'split("\n") | map(select(length > 0))')
+
+          # Extract host from SITE_URL
+          HOST=$(echo "$SITE_URL" | sed 's|https\?://||' | sed 's|/.*||')
+
+          # Build payload
+          PAYLOAD=$(jq -n \
+            --arg host "$HOST" \
+            --arg key "$INDEXNOW_KEY" \
+            --arg keyLocation "${SITE_URL}/${INDEXNOW_KEY}.txt" \
+            --argjson urlList "$URL_JSON" \
+            '{host: $host, key: $key, keyLocation: $keyLocation, urlList: $urlList}')
+
+          echo "Submitting $URL_COUNT URLs to IndexNow..."
+
+          # Submit to IndexNow
+          RESPONSE=$(curl -sS -w "\n%{http_code}" -X POST \
+            "https://api.indexnow.org/IndexNow" \
+            -H "Content-Type: application/json; charset=utf-8" \
+            -d "$PAYLOAD")
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | head -n -1)
+
+          echo "IndexNow response: $HTTP_CODE"
+          echo "$BODY"
+
+          if [ "$HTTP_CODE" -ge 400 ]; then
+            echo "::error::IndexNow submission failed with status $HTTP_CODE"
+            exit 1
+          fi

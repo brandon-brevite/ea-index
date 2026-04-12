@@ -84,6 +84,15 @@ export default function AdminPage() {
       .from("blog_posts")
       .update({ status: "published", published_at: new Date().toISOString() })
       .eq("id", post.id);
+
+    // Ping IndexNow for immediate indexing
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.theeaindex.com";
+    fetch("/api/indexnow", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url: `${baseUrl}/blog/${post.slug}` }),
+    }).catch(() => {}); // fire-and-forget
+
     loadData();
   }
 

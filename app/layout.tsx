@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   verification: {
     google: "bB_iYtlKchESRkAxUQjTDH5MDKjtJLJ3F54xpJbu8Kc",
     other: {
-      "msvalidate.01": "7D8AC3D925E2CC7C644E264EE05476C3",
+      "msvalidate.01": "5f5a3cb99ff94c178363f54aaf36cc10",
     },
   },
 };
