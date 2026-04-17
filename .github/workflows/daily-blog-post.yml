@@ -1,0 +1,40 @@
+name: Daily Blog Post Generation
+
+on:
+  schedule:
+    # Runs daily at 6:00 UTC (matches the original vercel.json cron)
+    - cron: "0 6 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger blog generation endpoint
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          SITE_URL: ${{ secrets.SITE_URL }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${CRON_SECRET:-}" ]; then
+            echo "::error::CRON_SECRET secret is not set"
+            exit 1
+          fi
+
+          URL="${SITE_URL:-https://www.theeaindex.com}/api/generate-post"
+          echo "Hitting $URL ..."
+
+          HTTP_CODE=$(curl -sS -L -o /tmp/response.json -w "%{http_code}" \
+            --max-time 120 \
+            -H "Authorization: Bearer $CRON_SECRET" \
+            "$URL")
+
+          echo "HTTP $HTTP_CODE"
+          cat /tmp/response.json || true
+          echo ""
+
+          if [ "$HTTP_CODE" -ge 400 ]; then
+            echo "::error::Blog generation returned status $HTTP_CODE"
+            exit 1
+          fi
