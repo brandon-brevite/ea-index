@@ -22,10 +22,15 @@ jobs:
             exit 1
           fi
 
-          URL="${SITE_URL:-https://www.theeaindex.com}/api/generate-post"
+          # Normalize to apex host — www → apex redirect strips the
+          # Authorization header on curl -L, causing 401.
+          BASE="${SITE_URL:-https://www.theeaindex.com}"
+          BASE="${BASE%/}"
+          BASE="${BASE/https:\/\/www./https://}"
+          URL="$BASE/api/generate-post"
           echo "Hitting $URL ..."
 
-          HTTP_CODE=$(curl -sS -L -o /tmp/response.json -w "%{http_code}" \
+          HTTP_CODE=$(curl -sS -o /tmp/response.json -w "%{http_code}" \
             --max-time 120 \
             -H "Authorization: Bearer $CRON_SECRET" \
             "$URL")
