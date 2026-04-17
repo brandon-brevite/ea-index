@@ -158,7 +158,7 @@ export async function POST(request: NextRequest) {
     }
     const parsed = JSON.parse(rawText);
 
-    // 5. Insert as draft
+    // 5. Insert as published
     const { error: insertError } = await supabase.from("blog_posts").insert({
       title: parsed.title,
       slug: parsed.slug,
@@ -166,7 +166,8 @@ export async function POST(request: NextRequest) {
       excerpt: parsed.excerpt,
       target_keyword: queueItem.target_keyword,
       category: parsed.category || queueItem.category,
-      status: "draft",
+      status: "published",
+      published_at: new Date().toISOString(),
       meta_title: parsed.meta_title,
       meta_description: parsed.meta_description,
     });
