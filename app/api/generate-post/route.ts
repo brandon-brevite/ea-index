@@ -1,5 +1,6 @@
 import { createServerClient } from "@/lib/supabase";
 import Anthropic from "@anthropic-ai/sdk";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 const SYSTEM_PROMPT = `You are the writer for an independent comparison site that reviews remote executive assistant services. You write for founders, executives, and entrepreneurs who are evaluating whether to hire an EA and which service to use.
@@ -179,6 +180,12 @@ export async function POST(request: NextRequest) {
       .from("blog_queue")
       .update({ status: "done" })
       .eq("id", queueItem.id);
+
+    // Bust Next.js caches so the new post appears immediately on
+    // pages that still use ISR (sitemap, related-posts, etc).
+    revalidatePath("/insights");
+    revalidatePath(`/insights/${parsed.slug}`);
+    revalidatePath("/sitemap.xml");
 
     // 7. Send Slack notification if webhook configured
     const slackWebhook = process.env.SLACK_WEBHOOK_URL;

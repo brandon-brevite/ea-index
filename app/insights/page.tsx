@@ -3,7 +3,7 @@ import { BlogPost, CATEGORY_LABELS } from "@/lib/types";
 import { Metadata } from "next";
 import Link from "next/link";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Insights | The EA Index",
