@@ -15,7 +15,7 @@ Noire is not the cheapest option on this list. It is the most personal.',
  array['founders', 'executives'],
  array['White-glove onboarding tailored to your workflow', 'Remote Executive Partners with years of experience', 'No long-term contracts required', 'Direct communication with your assistant'],
  array['Smaller team means less redundancy'],
- 4.4, true, true, 0),
+ 4.4, false, true, 12),
 
 ('Athena', 'athena', 'https://www.athenago.com', null,
  'Philippines-based managed EA service popular with tech founders',

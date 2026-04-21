@@ -10,7 +10,7 @@ import {
 } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
 
-type SortKey = "price_low" | "price_high" | "rating";
+type SortKey = "price_low" | "price_high";
 
 function formatPrice(service: Service): string {
   if (!service.price_range_low && !service.price_range_high) {
@@ -27,28 +27,6 @@ function formatPrice(service: Service): string {
   return `${high}/mo`;
 }
 
-function RatingStars({ rating }: { rating: number | null }) {
-  if (!rating) return <span className="text-gray-400 text-sm">N/A</span>;
-  return (
-    <div className="flex items-center gap-1.5">
-      <span className="text-sm font-semibold text-navy">{rating.toFixed(1)}</span>
-      <div className="flex gap-0.5">
-        {[1, 2, 3, 4, 5].map((star) => (
-          <svg
-            key={star}
-            width="12"
-            height="12"
-            viewBox="0 0 12 12"
-            fill={star <= Math.round(rating) ? "#2563EB" : "#E2E8F0"}
-          >
-            <path d="M6 0.5L7.76 4.07L11.5 4.62L8.75 7.29L9.52 11.01L6 9.17L2.48 11.01L3.25 7.29L0.5 4.62L4.24 4.07L6 0.5Z" />
-          </svg>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 async function trackClick(serviceId: string) {
   await supabase.from("clicks").insert({
     service_id: serviceId,
@@ -61,7 +39,7 @@ export default function ComparisonTable({
 }: {
   services: Service[];
 }) {
-  const [sortBy, setSortBy] = useState<SortKey>("rating");
+  const [sortBy, setSortBy] = useState<SortKey>("price_low");
   const [filterModel, setFilterModel] = useState<ServiceModel | "all">("all");
   const [filterLocation, setFilterLocation] = useState<string>("all");
   const [filterBestFor, setFilterBestFor] = useState<string>("all");
@@ -81,23 +59,18 @@ export default function ComparisonTable({
       result = result.filter((s) => s.best_for.includes(filterBestFor));
     }
 
-    const noire = result.filter((s) => s.is_editors_pick);
-    const rest = result.filter((s) => !s.is_editors_pick);
-
-    rest.sort((a, b) => {
+    result.sort((a, b) => {
       switch (sortBy) {
         case "price_low":
           return (a.price_range_low ?? 99999) - (b.price_range_low ?? 99999);
         case "price_high":
           return (b.price_range_high ?? 0) - (a.price_range_high ?? 0);
-        case "rating":
-          return (b.rating ?? 0) - (a.rating ?? 0);
         default:
           return a.display_order - b.display_order;
       }
     });
 
-    return [...noire, ...rest];
+    return result;
   }, [services, sortBy, filterModel, filterLocation, filterBestFor]);
 
   const selectClasses =
@@ -151,7 +124,6 @@ export default function ComparisonTable({
           onChange={(e) => setSortBy(e.target.value as SortKey)}
           className={selectClasses}
         >
-          <option value="rating">Sort: Rating</option>
           <option value="price_low">Sort: Price (low to high)</option>
           <option value="price_high">Sort: Price (high to low)</option>
         </select>
@@ -178,9 +150,6 @@ export default function ComparisonTable({
                 <th className="text-xs font-semibold text-gray-400 uppercase tracking-wider py-3.5 px-5 text-left hidden lg:table-cell">
                   Best for
                 </th>
-                <th className="text-xs font-semibold text-gray-400 uppercase tracking-wider py-3.5 px-5 text-left">
-                  Rating
-                </th>
                 <th className="py-3.5 px-5">
                   <span className="sr-only">Actions</span>
                 </th>
@@ -188,41 +157,25 @@ export default function ComparisonTable({
             </thead>
             <tbody>
               {filtered.map((service, i) => {
-                const rank = service.is_editors_pick
-                  ? null
-                  : filtered.slice(0, i + 1).filter((s) => !s.is_editors_pick).length;
+                const rank = i + 1;
                 return (
                 <tr
                   key={service.id}
                   className={`border-b border-gray-100 last:border-b-0 transition-colors hover:bg-blue-50/30 ${
-                    service.is_editors_pick
-                      ? "bg-gradient-to-r from-blue-50/60 to-purple-50/30"
-                      : i % 2 === 1
-                      ? "bg-gray-50/30"
-                      : ""
+                    i % 2 === 1 ? "bg-gray-50/30" : ""
                   }`}
                 >
                   <td className="py-4 px-5">
                     <div className="flex items-center gap-2.5">
-                      {rank !== null && (
-                        <span className="text-xs font-semibold text-gray-400 min-w-[18px]">
-                          {`${rank}.`}
-                        </span>
-                      )}
+                      <span className="text-xs font-semibold text-gray-400 min-w-[18px]">
+                        {`${rank}.`}
+                      </span>
                       <Link
                         href={`/services/${service.slug}`}
                         className="font-semibold text-navy hover:text-blue-600 transition-colors"
                       >
                         {service.name}
                       </Link>
-                      {service.is_editors_pick && (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider bg-gradient-to-r from-blue-600 to-purple-600 text-white px-2.5 py-0.5 rounded-full whitespace-nowrap">
-                          <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
-                            <path d="M5 0.5L6.18 3.82L9.69 3.82L6.76 5.93L7.94 9.25L5 7.14L2.06 9.25L3.24 5.93L0.31 3.82L3.82 3.82L5 0.5Z" />
-                          </svg>
-                          Editor&apos;s Pick
-                        </span>
-                      )}
                     </div>
                   </td>
                   <td className="py-4 px-5 text-sm font-medium text-gray-700 whitespace-nowrap">
@@ -245,9 +198,6 @@ export default function ComparisonTable({
                         </span>
                       ))}
                     </div>
-                  </td>
-                  <td className="py-4 px-5">
-                    <RatingStars rating={service.rating} />
                   </td>
                   <td className="py-4 px-5">
                     <a

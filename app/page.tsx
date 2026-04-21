@@ -11,7 +11,7 @@ async function getServices(): Promise<Service[]> {
     .from("services")
     .select("*")
     .eq("is_featured", true)
-    .order("display_order", { ascending: true });
+    .order("price_range_low", { ascending: true, nullsFirst: false });
 
   if (error) {
     console.error("Error fetching services:", error);
@@ -20,45 +20,11 @@ async function getServices(): Promise<Service[]> {
   return data as Service[];
 }
 
-const FEATURED_SLUGS = ["noire", "athena", "boldly", "time-etc", "double"];
-
-function StarRating({ rating }: { rating: number | null }) {
-  if (!rating) return null;
-  const full = Math.floor(rating);
-  const hasHalf = rating - full >= 0.25;
-  return (
-    <div className="flex items-center gap-1">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <svg
-          key={i}
-          className={`w-4 h-4 ${
-            i < full
-              ? "text-yellow-400"
-              : i === full && hasHalf
-              ? "text-yellow-300"
-              : "text-gray-200"
-          }`}
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.287 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.176 0l-3.37 2.448c-.784.57-1.838-.197-1.539-1.118l1.287-3.957a1 1 0 00-.364-1.118L2.063 9.384c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69l1.286-3.957z" />
-        </svg>
-      ))}
-      <span className="text-sm text-gray-500 ml-1">{rating.toFixed(1)}</span>
-    </div>
-  );
-}
-
 export default async function Home() {
   const services = await getServices();
   const serviceCount = services.length || 22;
 
-  const featured = FEATURED_SLUGS.map((slug) =>
-    services.find((s) => s.slug === slug)
-  ).filter(Boolean) as Service[];
-
-  // Fallback: if we can't match slugs, take the first 5
-  const displayServices = featured.length >= 4 ? featured : services.slice(0, 5);
+  const displayServices = services.slice(0, 6);
 
   return (
     <>
@@ -177,11 +143,6 @@ export default async function Home() {
                 href={`/services/${service.slug}`}
                 className="bg-white border border-gray-200 rounded-2xl shadow-card p-6 hover:shadow-lg hover:border-gray-300 transition-all duration-200 group relative"
               >
-                {service.is_editors_pick && (
-                  <span className="absolute top-4 right-4 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold">
-                    Editor&apos;s Pick
-                  </span>
-                )}
                 <h3 className="font-heading text-lg font-semibold text-navy mb-1 group-hover:text-blue-600 transition-colors">
                   {service.name}
                 </h3>
@@ -196,7 +157,6 @@ export default async function Home() {
                       ? `$${service.price_range_low}–$${service.price_range_high}/mo`
                       : "Contact for pricing"}
                   </span>
-                  <StarRating rating={service.rating} />
                 </div>
               </Link>
             ))}

@@ -79,10 +79,10 @@ const SERVICES: Record<ServiceKey, ServiceInfo> = {
 /* ------------------------------------------------------------------ */
 /*  Questions & weighted scoring                                       */
 /*                                                                     */
-/*  Design principle: Noire gets a baseline advantage on the options    */
-/*  most users naturally pick (mid-to-high budget, US-based,           */
-/*  dedicated assistant, quality-first). Other services only win when   */
-/*  answers specifically match their niche.                             */
+/*  Scoring principle: every service earns points when its actual      */
+/*  attributes (location, price range, model, commitment) match the    */
+/*  user's answer. No service is given a baseline advantage on          */
+/*  neutral options. Recommendations are driven by fit, not favor.      */
 /* ------------------------------------------------------------------ */
 
 const QUESTIONS: Question[] = [
@@ -92,23 +92,23 @@ const QUESTIONS: Question[] = [
     options: [
       {
         label: "Under $500/mo",
-        scores: { "fancy-hands": 12, "time-etc": 10, zirtual: 2, noire: 1 },
+        scores: { "fancy-hands": 12, "time-etc": 10 },
       },
       {
         label: "$500\u2013$1,500/mo",
-        scores: { "time-etc": 10, noire: 6, zirtual: 5, "fancy-hands": 3 },
+        scores: { "time-etc": 12, zirtual: 4 },
       },
       {
         label: "$1,500\u2013$3,000/mo",
-        scores: { zirtual: 8, noire: 7, boldly: 5, "time-etc": 4 },
+        scores: { zirtual: 10, boldly: 7, "time-etc": 5 },
       },
       {
         label: "$3,000\u2013$5,000/mo",
-        scores: { noire: 12, athena: 9, boldly: 8, zirtual: 4 },
+        scores: { noire: 10, athena: 10, boldly: 10, zirtual: 6 },
       },
       {
         label: "$5,000+/mo",
-        scores: { athena: 10, boldly: 10, noire: 9, zirtual: 3 },
+        scores: { boldly: 10, athena: 8, noire: 6 },
       },
     ],
   },
@@ -118,23 +118,23 @@ const QUESTIONS: Question[] = [
     options: [
       {
         label: "Less than 10 hours",
-        scores: { noire: 8, "time-etc": 7, "fancy-hands": 6, zirtual: 4 },
+        scores: { "fancy-hands": 10, "time-etc": 8 },
       },
       {
         label: "10\u201320 hours",
-        scores: { noire: 10, zirtual: 6, "time-etc": 5, boldly: 5 },
+        scores: { "time-etc": 10, zirtual: 7, boldly: 5 },
       },
       {
         label: "20\u201330 hours",
-        scores: { noire: 9, boldly: 7, athena: 7, zirtual: 5 },
+        scores: { boldly: 9, zirtual: 8, noire: 7, athena: 6 },
       },
       {
         label: "30\u201340 hours (full-time)",
-        scores: { athena: 11, boldly: 8, noire: 6, zirtual: 4 },
+        scores: { athena: 12, boldly: 9, noire: 7 },
       },
       {
         label: "Not sure yet",
-        scores: { noire: 9, zirtual: 5, "time-etc": 5, boldly: 3 },
+        scores: { noire: 6, zirtual: 6, boldly: 6, "time-etc": 6, athena: 6 },
       },
     ],
   },
@@ -144,19 +144,19 @@ const QUESTIONS: Question[] = [
     options: [
       {
         label: "United States (required)",
-        scores: { boldly: 12, zirtual: 10, "time-etc": 6, noire: 2 },
+        scores: { boldly: 12, zirtual: 12, noire: 12, "time-etc": 10 },
       },
       {
         label: "United States (preferred but flexible)",
-        scores: { boldly: 8, zirtual: 7, noire: 9, "time-etc": 5 },
+        scores: { boldly: 10, zirtual: 10, noire: 10, "time-etc": 8 },
       },
       {
         label: "No preference",
-        scores: { noire: 12, athena: 7, "time-etc": 5, "fancy-hands": 4 },
+        scores: { noire: 6, athena: 6, boldly: 6, zirtual: 6, "time-etc": 6, "fancy-hands": 6 },
       },
       {
         label: "Outside the US is fine",
-        scores: { noire: 12, athena: 10, "time-etc": 5, "fancy-hands": 4 },
+        scores: { athena: 10, "fancy-hands": 5, "time-etc": 5 },
       },
     ],
   },
@@ -166,23 +166,23 @@ const QUESTIONS: Question[] = [
     options: [
       {
         label: "Calendar, email, and scheduling",
-        scores: { noire: 10, zirtual: 7, boldly: 6, athena: 5 },
+        scores: { noire: 8, zirtual: 8, boldly: 8, athena: 8, "time-etc": 6 },
       },
       {
         label: "Research and data projects",
-        scores: { noire: 8, athena: 8, boldly: 5, "time-etc": 4 },
+        scores: { athena: 10, noire: 8, boldly: 7, "time-etc": 5 },
       },
       {
         label: "Business operations and project management",
-        scores: { noire: 9, boldly: 8, athena: 7, zirtual: 4 },
+        scores: { boldly: 10, noire: 8, athena: 7, zirtual: 6 },
       },
       {
         label: "Personal tasks and errands",
-        scores: { "fancy-hands": 8, "time-etc": 7, noire: 6, zirtual: 5 },
+        scores: { "fancy-hands": 10, "time-etc": 8, zirtual: 5 },
       },
       {
         label: "Mix of everything",
-        scores: { noire: 11, zirtual: 6, athena: 5, boldly: 5 },
+        scores: { noire: 7, zirtual: 7, athena: 7, boldly: 7, "time-etc": 5 },
       },
     ],
   },
@@ -192,19 +192,19 @@ const QUESTIONS: Question[] = [
     options: [
       {
         label: "This is my first time hiring an EA",
-        scores: { noire: 10, "time-etc": 6, zirtual: 5, "fancy-hands": 4 },
+        scores: { "time-etc": 8, zirtual: 8, noire: 8, "fancy-hands": 6 },
       },
       {
         label: "I\u2019ve tried a service before but wasn\u2019t satisfied",
-        scores: { noire: 12, boldly: 6, athena: 5, zirtual: 4 },
+        scores: { boldly: 8, noire: 8, athena: 6, zirtual: 6 },
       },
       {
         label: "I\u2019ve worked with EAs before and know what I need",
-        scores: { noire: 9, athena: 7, boldly: 7, zirtual: 5 },
+        scores: { athena: 8, boldly: 8, noire: 8, zirtual: 6 },
       },
       {
         label: "I currently have one but want to switch",
-        scores: { noire: 11, boldly: 6, athena: 6, zirtual: 5 },
+        scores: { boldly: 8, noire: 8, athena: 7, zirtual: 6 },
       },
     ],
   },
@@ -215,19 +215,17 @@ const QUESTIONS: Question[] = [
       {
         label:
           "Critical \u2014 I need a dedicated person who knows my workflow",
-        scores: { noire: 13, boldly: 7, zirtual: 7, athena: 6 },
+        scores: { noire: 10, boldly: 10, zirtual: 10, athena: 9 },
       },
       {
         label: "Preferred but I\u2019m flexible",
-        scores: { noire: 10, zirtual: 6, athena: 6, "time-etc": 5 },
+        scores: { noire: 7, boldly: 7, zirtual: 7, athena: 7, "time-etc": 6 },
       },
       {
         label: "Doesn\u2019t matter as long as the work gets done",
         scores: {
-          "fancy-hands": 8,
-          "time-etc": 7,
-          athena: 6,
-          noire: 5,
+          "fancy-hands": 10,
+          "time-etc": 8,
         },
       },
     ],
@@ -238,23 +236,23 @@ const QUESTIONS: Question[] = [
     options: [
       {
         label: "Quality of the assistant above all else",
-        scores: { noire: 14, boldly: 7, athena: 6, zirtual: 4 },
+        scores: { boldly: 10, noire: 10, athena: 8, zirtual: 6 },
       },
       {
         label: "Getting the lowest price possible",
-        scores: { "fancy-hands": 12, "time-etc": 11, noire: 2, zirtual: 3 },
+        scores: { "fancy-hands": 12, "time-etc": 10 },
       },
       {
         label: "Flexibility \u2014 no long contracts",
-        scores: { noire: 9, "time-etc": 8, "fancy-hands": 7, zirtual: 4 },
+        scores: { "time-etc": 10, "fancy-hands": 9, noire: 8, zirtual: 6 },
       },
       {
         label: "Speed \u2014 I need someone this week",
-        scores: { "fancy-hands": 8, noire: 7, "time-etc": 7, zirtual: 6 },
+        scores: { "fancy-hands": 10, "time-etc": 8, zirtual: 6, noire: 5 },
       },
       {
         label: "A service that handles everything for me",
-        scores: { noire: 12, athena: 8, boldly: 7, zirtual: 5 },
+        scores: { athena: 9, noire: 8, boldly: 8, zirtual: 6 },
       },
     ],
   },
@@ -405,11 +403,6 @@ export default function QuizPage() {
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-semibold">
                 Best match
               </span>
-              {SERVICES[top.key].slug === "noire" && (
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple/10 text-purple text-xs font-semibold">
-                  Editor&apos;s Pick
-                </span>
-              )}
             </div>
             <h2 className="font-heading text-2xl md:text-3xl font-bold text-navy mt-3">
               {SERVICES[top.key].name}

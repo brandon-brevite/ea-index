@@ -4,11 +4,12 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 
 const TOP_SERVICES = [
-  { name: "Athena", slug: "athena", price: "$3,000-$3,600/mo" },
-  { name: "Boldly", slug: "boldly", price: "$2,520-$5,040/mo" },
-  { name: "ProAssisting", slug: "proassisting", price: "$3,300-$6,000/mo" },
-  { name: "Persona", slug: "persona", price: "$3,000-$5,000/mo" },
   { name: "Time Etc", slug: "time-etc", price: "$390-$1,560/mo" },
+  { name: "Boldly", slug: "boldly", price: "$2,520-$5,040/mo" },
+  { name: "Athena", slug: "athena", price: "$3,000-$3,600/mo" },
+  { name: "Noire", slug: "noire", price: "$3,000-$3,500/mo" },
+  { name: "Persona", slug: "persona", price: "$3,000-$5,000/mo" },
+  { name: "ProAssisting", slug: "proassisting", price: "$3,300-$6,000/mo" },
 ];
 
 export default function Header() {
@@ -49,21 +50,7 @@ export default function Header() {
             </Link>
             <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
               <div className="bg-white border border-gray-200 rounded-xl shadow-lg py-3 w-[300px]">
-                {/* Editor's Choice */}
-                <Link
-                  href="/services/noire"
-                  className="flex items-center gap-3 px-4 py-2.5 hover:bg-blue-50/50 transition-colors"
-                >
-                  <span className="inline-flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider bg-gradient-to-r from-blue-600 to-purple-600 text-white px-2 py-0.5 rounded-full whitespace-nowrap shrink-0">
-                    Editor&apos;s Pick
-                  </span>
-                  <span className="text-sm font-semibold text-navy">Noire</span>
-                  <span className="text-xs text-gray-400 ml-auto">$3,000-$3,500/mo</span>
-                </Link>
-
-                <div className="border-t border-gray-100 my-1.5" />
-
-                {/* Numbered top services */}
+                {/* Top services by price */}
                 {TOP_SERVICES.map((svc, i) => (
                   <Link
                     key={svc.slug}
@@ -174,13 +161,7 @@ export default function Header() {
               Compare all services
             </Link>
             <div className="mt-3 pl-2 flex flex-col gap-2">
-              <Link href="/services/noire" onClick={() => setMenuOpen(false)} className="flex items-center gap-2 text-sm text-gray-600">
-                <span className="inline-flex items-center text-[8px] font-bold uppercase tracking-wider bg-gradient-to-r from-blue-600 to-purple-600 text-white px-1.5 py-0.5 rounded-full">
-                  Pick
-                </span>
-                Noire
-              </Link>
-              {TOP_SERVICES.slice(0, 3).map((svc, i) => (
+              {TOP_SERVICES.slice(0, 4).map((svc, i) => (
                 <Link key={svc.slug} href={`/services/${svc.slug}`} onClick={() => setMenuOpen(false)} className="text-sm text-gray-500 hover:text-navy">
                   {i + 1}. {svc.name}
                 </Link>

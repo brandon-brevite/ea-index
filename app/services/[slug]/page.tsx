@@ -78,11 +78,6 @@ export default async function ServicePage({
           <h1 className="font-heading text-3xl sm:text-4xl font-bold text-navy tracking-tight">
             {service.name}
           </h1>
-          {service.is_editors_pick && (
-            <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider bg-gradient-to-r from-blue-600 to-purple-600 text-white px-2.5 py-0.5 rounded-full">
-              Editor&apos;s Pick
-            </span>
-          )}
         </div>
         {service.tagline && (
           <p className="text-gray-500 text-body">{service.tagline}</p>
@@ -230,22 +225,16 @@ export default async function ServicePage({
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "Review",
-            itemReviewed: {
-              "@type": "Product",
+            "@type": "Service",
+            name: service.name,
+            url: service.website_url,
+            serviceType: "Executive Assistant Service",
+            areaServed: "Worldwide",
+            description: service.tagline || `${service.name} executive assistant service.`,
+            provider: {
+              "@type": "Organization",
               name: service.name,
               url: service.website_url,
-            },
-            reviewRating: service.rating
-              ? {
-                  "@type": "Rating",
-                  ratingValue: service.rating,
-                  bestRating: 5,
-                }
-              : undefined,
-            author: {
-              "@type": "Organization",
-              name: "The EA Index",
             },
           }),
         }}
