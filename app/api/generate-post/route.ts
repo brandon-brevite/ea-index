@@ -95,6 +95,107 @@ OUTPUT FORMAT. Return your response as a JSON object with these fields:
 
 Do not include anything outside the JSON object. No preamble, no explanation, no markdown code fences around the JSON.`;
 
+const TOPIC_REFILL_SYSTEM_PROMPT = `You generate topic ideas for an independent comparison site that reviews remote executive assistant services. The audience is founders, executives, and entrepreneurs evaluating whether to hire an EA and which service to use.
+
+You will be given a list of titles that have already been written. Do not propose anything that overlaps in subject. Each new topic should cover a distinct angle.
+
+Editorial constraints, mirrored from the blog's writing rules:
+- No hourly rate / dollar-per-hour angles. Pricing topics use monthly ranges or percentages only.
+- No negative-review framing of specific named services. Comparisons present facts; opinion pieces stay industry-level.
+- Topics should be specific, not generic. "What a $3,000/month EA actually does" beats "Understanding EA pricing".
+- Mix categories. Lean educational: delegation frameworks, hiring playbooks, pricing structures, what to look for, industry trends, productivity tactics.
+
+OUTPUT FORMAT. Return a single JSON object with this shape:
+
+{
+  "topics": [
+    {
+      "topic": "one-sentence topic description, specific enough that a writer knows what to write",
+      "target_keyword": "the primary SEO keyword phrase, lowercase, 2-5 words",
+      "category": "one of: comparison, pricing, guide, opinion, review"
+    }
+  ]
+}
+
+Do not include anything outside the JSON object. No preamble, no markdown code fences.`;
+
+const REFILL_BATCH_SIZE = Number(process.env.BLOG_QUEUE_REFILL_BATCH ?? 10);
+const TOPIC_HISTORY_LOOKBACK = 50;
+
+type SupabaseClient = ReturnType<typeof createServerClient>;
+
+async function refillQueue(
+  supabase: SupabaseClient,
+  client: Anthropic,
+): Promise<number> {
+  const { data: recentPosts } = await supabase
+    .from("blog_posts")
+    .select("title")
+    .order("created_at", { ascending: false })
+    .limit(TOPIC_HISTORY_LOOKBACK);
+
+  const existingTitles = (recentPosts ?? [])
+    .map((p: { title: string }) => `- ${p.title}`)
+    .join("\n");
+
+  const userMessage = `Generate ${REFILL_BATCH_SIZE} new blog post topics.
+
+Already-written titles (do not duplicate or overlap):
+${existingTitles || "(none yet)"}`;
+
+  const response = await client.messages.create({
+    model: "claude-sonnet-4-20250514",
+    max_tokens: 2048,
+    system: TOPIC_REFILL_SYSTEM_PROMPT,
+    messages: [{ role: "user", content: userMessage }],
+  });
+
+  const textBlock = response.content.find((b) => b.type === "text");
+  if (!textBlock || textBlock.type !== "text") {
+    throw new Error("No text response from Claude during refill");
+  }
+
+  let rawText = textBlock.text.trim();
+  if (rawText.startsWith("```")) {
+    rawText = rawText.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "");
+  }
+
+  const parsed = JSON.parse(rawText) as {
+    topics: Array<{
+      topic: string;
+      target_keyword?: string;
+      category?: string;
+    }>;
+  };
+
+  const validCategories = new Set([
+    "comparison",
+    "pricing",
+    "guide",
+    "opinion",
+    "review",
+  ]);
+
+  const rows = parsed.topics
+    .filter((t) => t.topic && t.topic.trim())
+    .map((t) => ({
+      topic: t.topic.trim(),
+      target_keyword: t.target_keyword?.trim() || null,
+      category:
+        t.category && validCategories.has(t.category) ? t.category : "guide",
+      status: "queued",
+    }));
+
+  if (rows.length === 0) {
+    throw new Error("Refill returned no valid topics");
+  }
+
+  const { error } = await supabase.from("blog_queue").insert(rows);
+  if (error) throw error;
+
+  return rows.length;
+}
+
 export async function POST(request: NextRequest) {
   // Verify cron secret or admin auth
   const authHeader = request.headers.get("authorization");
@@ -105,10 +206,13 @@ export async function POST(request: NextRequest) {
   }
 
   const supabase = createServerClient();
+  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
   try {
-    // 1. Get oldest queued topic
-    const { data: queueItem } = await supabase
+    // 1. Get oldest queued topic. If the queue is empty, auto-refill
+    // with a fresh batch and try again so the same cron run still
+    // produces a post.
+    let { data: queueItem } = await supabase
       .from("blog_queue")
       .select("*")
       .eq("status", "queued")
@@ -116,8 +220,23 @@ export async function POST(request: NextRequest) {
       .limit(1)
       .single();
 
+    let refilledCount = 0;
     if (!queueItem) {
-      return NextResponse.json({ message: "No queued topics" }, { status: 200 });
+      refilledCount = await refillQueue(supabase, client);
+      ({ data: queueItem } = await supabase
+        .from("blog_queue")
+        .select("*")
+        .eq("status", "queued")
+        .order("created_at", { ascending: true })
+        .limit(1)
+        .single());
+    }
+
+    if (!queueItem) {
+      return NextResponse.json(
+        { message: "No queued topics after refill", refilledCount },
+        { status: 200 },
+      );
     }
 
     // 2. Mark as generating
@@ -127,7 +246,6 @@ export async function POST(request: NextRequest) {
       .eq("id", queueItem.id);
 
     // 3. Call Claude API
-    const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
     let userMessage = `Write a blog post about: "${queueItem.topic}"`;
     if (queueItem.target_keyword) {
@@ -203,6 +321,7 @@ export async function POST(request: NextRequest) {
       ok: true,
       title: parsed.title,
       slug: parsed.slug,
+      refilledCount,
     });
   } catch (error) {
     console.error("Blog generation failed:", error);
