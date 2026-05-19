@@ -341,8 +341,12 @@ export async function POST(request: NextRequest) {
         .eq("id", generating.id);
     }
 
+    const detail =
+      error instanceof Error
+        ? `${error.name}: ${error.message}`
+        : String(error);
     return NextResponse.json(
-      { error: "Blog generation failed" },
+      { error: "Blog generation failed", detail },
       { status: 500 }
     );
   }
